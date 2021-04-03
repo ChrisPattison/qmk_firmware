@@ -12,7 +12,7 @@ MCU_SERIES = SN32F240B
 # Linker script to use
 # - it should exist either in <chibios>/os/common/ports/ARMCMx/compilers/GCC/ld/
 #   or <this_dir>/ld/
-MCU_LDSCRIPT = SN32F240B
+MCU_LDSCRIPT = SN32F240B_0x200_bootloader
 
 # Startup code to use
 #  - it should exist in <chibios>/os/common/startup/ARMCMx/compilers/GCC/mk/
@@ -34,8 +34,8 @@ SN32_BOOTLOADER_ADDRESS = 0x1FFF0301
 OPT_DEFS = -O2
 
 # Options to pass to dfu-util when flashing
-# DFU_ARGS = -d 0483:df11 -a 0 -s 0x08000000:leave
-# DFU_SUFFIX_ARGS = -p DF11 -v 0483
+DFU_ARGS = -d 0c45:7040 -a 0 -s 0x00000200:leave
+DFU_SUFFIX_ARGS = -v 0c45 -p 7040
 
 # Build Options
 #   comment out to disable the options.
