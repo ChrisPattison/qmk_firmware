@@ -33,10 +33,6 @@ SN32_BOOTLOADER_ADDRESS = 0x1FFF0301
 
 OPT_DEFS = -O2
 
-# Options to pass to dfu-util when flashing
-DFU_ARGS = -d 0c45:7040 -a 0 -s 0x00000200:leave
-DFU_SUFFIX_ARGS = -v 0c45 -p 7040
-
 # Build Options
 #   comment out to disable the options.
 #
@@ -54,7 +50,7 @@ NKRO_ENABLE = no        # USB Nkey Rollover
 AUDIO_ENABLE = no
 RGBLIGHT_ENABLE = no
 SERIAL_LINK_ENABLE = no
-WAIT_FOR_USB = no
+WAIT_FOR_USB = yes
 CUSTOM_MATRIX = yes
 DIP_SWITCH_ENABLE = yes
 
