@@ -42,7 +42,6 @@ matrix_row_t matrix[MATRIX_ROWS]; //debounced values
 
 static bool matrix_changed = false;
 static uint8_t current_row = 0;
-
 extern volatile LED_TYPE led_state[DRIVER_LED_TOTAL];
 
 __attribute__((weak)) void matrix_init_kb(void) { matrix_init_user(); }
@@ -155,7 +154,7 @@ void matrix_init(void) {
     SN_CT16B1->MR22 = 0xFF;
 
     // Set prescale value
-    SN_CT16B1->PRE = 0x10;
+    SN_CT16B1->PRE = 0x02;
 
     //Set CT16B1 as the up-counting mode.
 	SN_CT16B1->TMRCTRL = (mskCT16_CRST);
@@ -209,28 +208,31 @@ OSAL_IRQ_HANDLER(SN32_CT16B1_HANDLER) {
         // Turn the selected row off
         writePinLow(led_row_pins[current_row]);
 
-        // Read the key matrix
-        for (uint8_t col_index = 0; col_index < MATRIX_COLS; col_index++) {
-            // Enable the column
-            writePinLow(col_pins[col_index]);
-
-            for (uint8_t row_index = 0; row_index < MATRIX_ROWS; row_index++) {
-                // Check row pin state
-                if (readPin(row_pins[row_index]) == 0) {
-                    // Pin LO, set col bit
-                    raw_matrix[row_index] |= (MATRIX_ROW_SHIFTER << col_index);
-                } else {
-                    // Pin HI, clear col bit
-                    raw_matrix[row_index] &= ~(MATRIX_ROW_SHIFTER << col_index);
-                }
-            }
-
-            // Disable the column
-            writePinHigh(col_pins[col_index]);
-        }
-
         // Turn the next row on
         current_row = (current_row + 1) % LED_MATRIX_ROWS_HW;
+
+        if(current_row == 0)
+        {
+            // Read the key matrix
+            for (uint8_t col_index = 0; col_index < MATRIX_COLS; col_index++) {
+                // Enable the column
+                writePinLow(col_pins[col_index]);
+
+                for (uint8_t row_index = 0; row_index < MATRIX_ROWS; row_index++) {
+                    // Check row pin state
+                    if (readPin(row_pins[row_index]) == 0) {
+                        // Pin LO, set col bit
+                        raw_matrix[row_index] |= (MATRIX_ROW_SHIFTER << col_index);
+                    } else {
+                        // Pin HI, clear col bit
+                        raw_matrix[row_index] &= ~(MATRIX_ROW_SHIFTER << col_index);
+                    }
+                }
+
+                // Disable the column
+                writePinHigh(col_pins[col_index]);
+            }
+        }
 
         uint8_t row_idx = hw_row_to_matrix_row[current_row];
         uint16_t row_ofst = row_ofsts[row_idx];
@@ -317,7 +319,7 @@ OSAL_IRQ_HANDLER(SN32_CT16B1_HANDLER) {
         }
 
         // Enable PWM outputs on column pins
-        SN_CT16B1->PWMIOENB = 0;
+        //SN_CT16B1->PWMIOENB = 0;
 
         if(SN_CT16B1->MR0 > 0)
         {
@@ -410,12 +412,6 @@ OSAL_IRQ_HANDLER(SN32_CT16B1_HANDLER) {
 
     // Set match interrupts and TC rest
     SN_CT16B1->MCTRL3 = (mskCT16_MR22IE_EN | mskCT16_MR22STOP_EN);
-
-    // COL match register
-    SN_CT16B1->MR22 = 0xFF;
-
-    // Set prescale value
-    SN_CT16B1->PRE = 0x10;
 
     writePinHigh(led_row_pins[current_row]);
 
