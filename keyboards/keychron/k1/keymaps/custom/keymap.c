@@ -31,7 +31,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 // entirely and just use numbers.
 enum layer_names {
     _BASE = 0,
-    _FL,
+    _FL = 1,
+    _COLEMAK = 2,
 };
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -92,6 +93,53 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                 {  _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______ }
             }
 };
+
+
+// void rgb_matrix_indicators_user(void) {
+//     // rgb_matrix_set_color(0, 255, 255, 255);
+// }
+
+// // Light LEDs 6 to 9 and 12 to 15 red when caps lock is active. Hard to ignore!
+// const rgblight_segment_t PROGMEM my_capslock_layer[] = RGBLIGHT_LAYER_SEGMENTS(
+//     {68, 1, HSV_RED}
+// );
+
+// const rgblight_segment_t PROGMEM my_layer1_layer[] = RGBLIGHT_LAYER_SEGMENTS(
+//     {1, 1, HSV_GREEN}
+// );
+
+// const rgblight_segment_t PROGMEM my_layer2_layer[] = RGBLIGHT_LAYER_SEGMENTS(
+//     {2, 1, HSV_GREEN}
+// );
+
+// const rgblight_segment_t PROGMEM my_layer3_layer[] = RGBLIGHT_LAYER_SEGMENTS(
+//     {3, 1, HSV_GREEN}
+// );
+
+// const rgblight_segment_t* const PROGMEM rgb_layers[] = RGBLIGHT_LAYERS_LIST(
+//     my_capslock_layer,
+//     my_layer1_layer,    // Overrides caps lock layer
+//     my_layer2_layer,    // Overrides other layers
+//     my_layer3_layer     // Overrides other layers
+// );
+
+// bool led_update_user(led_t led_state) {
+//     rgblight_set_layer_state(0, led_state.caps_lock);
+//     return true;
+// }
+
+// layer_state_t default_layer_state_set_user(layer_state_t state) {
+//     rgblight_set_layer_state(1, layer_state_cmp(state, _BASE));
+//     return state;
+// }
+
+// layer_state_t layer_state_set_user(layer_state_t state) {
+//     rgblight_set_layer_state(1, layer_state_cmp(state, 0));
+//     rgblight_set_layer_state(2, layer_state_cmp(state, 2));
+//     // rgblight_set_layer_state(3, layer_state_cmp(state, 3));
+//     return state;
+// }
+
 void dip_switch_update_user(uint8_t index, bool active){
   switch(index){
     case 0:
@@ -115,8 +163,18 @@ void dip_switch_update_user(uint8_t index, bool active){
 }
 void keyboard_post_init_user(void) {
   // Customise these values to desired behaviour
-  debug_enable=true;
-  debug_matrix=true;
+  debug_enable=false;
+  debug_matrix=false;
+  rgb_matrix_mode(RGB_MATRIX_SOLID_COLOR);
   //debug_keyboard=true;
   //debug_mouse=true;
+
+  // rgblight_layers = rgb_layers;
+}
+
+void rgb_matrix_indicators_user(void) {
+    // rgb_matrix_se_color(1, 0, 255, 0);
+    // rgb_matrix_set_color(2, 0, 255, 0);
+    // rgb_matrix_set_color(3, 0, 255, 0);
+    // rgb_matrix_set_color(4, 0, 255, 0);
 }
