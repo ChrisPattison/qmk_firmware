@@ -281,7 +281,7 @@ uint8_t matrix_scan(void) {
     return (uint8_t)changed;
 }
 
-uint8_t hw_row_to_matrix_row[18] = { 0, 0, 1, 1, 1, 2, 2, 2, 3, 3, 3, 4, 4, 4, 5, 5, 5, 0 };
+uint8_t hw_row_to_matrix_row[17] = { 0, 0, 1, 1, 1, 2, 2, 2, 3, 3, 3, 4, 4, 4, 5, 5, 5 };
 /**
  * @brief   CT16B1 interrupt handler.
  *
@@ -349,8 +349,8 @@ OSAL_IRQ_HANDLER(SN32_CT16B1_HANDLER) {
         SN_CT16B1->MR22 = led_state[row_ofst + 14].r;
         SN_CT16B1->MR23 = led_state[row_ofst + 15].r;
         SN_CT16B1->MR0  = led_state[row_ofst + 16].r;
-        SN_CT16B1->MR1  = led_state[row_ofst + 17].r;
-        SN_CT16B1->MR2  = led_state[row_ofst + 18].r;
+        // SN_CT16B1->MR1  = led_state[row_ofst + 17].r;
+        // SN_CT16B1->MR2  = led_state[row_ofst + 18].r;
     }
 
     if(current_led_row % 3 == 1)
@@ -372,8 +372,8 @@ OSAL_IRQ_HANDLER(SN32_CT16B1_HANDLER) {
         SN_CT16B1->MR22 = led_state[row_ofst + 14].b;
         SN_CT16B1->MR23 = led_state[row_ofst + 15].b;
         SN_CT16B1->MR0  = led_state[row_ofst + 16].b;
-        SN_CT16B1->MR1  = led_state[row_ofst + 17].b;
-        SN_CT16B1->MR2  = led_state[row_ofst + 18].b;
+        // SN_CT16B1->MR1  = led_state[row_ofst + 17].b;
+        // SN_CT16B1->MR2  = led_state[row_ofst + 18].b;
     }
 
     if(current_led_row % 3 == 2)
@@ -395,8 +395,8 @@ OSAL_IRQ_HANDLER(SN32_CT16B1_HANDLER) {
         SN_CT16B1->MR22 = led_state[row_ofst + 14].g;
         SN_CT16B1->MR23 = led_state[row_ofst + 15].g;
         SN_CT16B1->MR0  = led_state[row_ofst + 16].g;
-        SN_CT16B1->MR1  = led_state[row_ofst + 17].g;
-        SN_CT16B1->MR2  = led_state[row_ofst + 18].g;
+        // SN_CT16B1->MR1  = led_state[row_ofst + 17].g;
+        // SN_CT16B1->MR2  = led_state[row_ofst + 18].g;
     }
 
 #ifdef INTERRUPT_SCAN
